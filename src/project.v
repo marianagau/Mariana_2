@@ -1,27 +1,48 @@
-/*
- * Copyright (c) 2024 Your Name
- * SPDX-License-Identifier: Apache-2.0
- */
+# Tiny Tapeout project information
+project: 
+  title:        "Evidencia 2 Código Verilog"
+  author:       "Mariana Gautrin, Arah Rojas, Olín"
+  discord:      "NA"
+  description:  "Simulación 3D"
+  language:     "Verilog"
+  clock_hz:     0
 
-`default_nettype none
+  tiles: "1x1"
+  top_module:  "tt_um_equipo7"
 
-module tt_um_example (
-    input  wire [7:0] ui_in,    // Dedicated inputs
-    output wire [7:0] uo_out,   // Dedicated outputs
-    input  wire [7:0] uio_in,   // IOs: Input path
-    output wire [7:0] uio_out,  // IOs: Output path
-    output wire [7:0] uio_oe,   // IOs: Enable path (active high: 0=input, 1=output)
-    input  wire       ena,      // always 1 when the design is powered, so you can ignore it
-    input  wire       clk,      // clock
-    input  wire       rst_n     // reset_n - low to reset
-);
+  source_files:
+    - "project.v"
+  user_config: "user_config.tcl"   # 👈 Esta línea fue añadida para evitar errores de capas
 
-  // All output pins must be assigned. If not used, assign to 0.
-  assign uo_out  = ui_in + uio_in;  // Example: ou_out is the sum of ui_in and uio_in
-  assign uio_out = 0;
-  assign uio_oe  = 0;
+pinout:
+  # Inputs
+  ui[0]: "rst_n"       # Reset activo en bajo
+  ui[1]: "tx_req"      # TX Start request
+  ui[2]: "clk16"       # 16x baud rate clock
+  ui[3]: "cfg0"        # Config bit 0 (data_len[0])
+  ui[4]: "cfg1"        # Config bit 1 (data_len[1])
+  ui[5]: "cfg2"        # Config bit 2 (parity_even)
+  ui[6]: "cfg3"        # Config bit 3 (parity_en)
+  ui[7]: "rx_sn"       # RX serial input
 
-  // List all unused inputs to prevent warnings
-  wire _unused = &{ena, clk, rst_n, 1'b0};
+  # Outputs
+  uo[0]: "tx_sn"       # TX serial output
+  uo[1]: "tx_busy"     # TX busy flag
+  uo[2]: "have_data"   # Flag: se recibió dato
+  uo[3]: "rx_err"      # RX error flag
+  uo[4]: ""            # Unused
+  uo[5]: ""            # Unused
+  uo[6]: ""            # Unused
+  uo[7]: ""            # Unused
 
-endmodule
+  # Bidirectional pins (TX data input / RX data output)
+  uio[0]: "data0"
+  uio[1]: "data1"
+  uio[2]: "data2"
+  uio[3]: "data3"
+  uio[4]: "data4"
+  uio[5]: "data5"
+  uio[6]: "data6"
+  uio[7]: "data7"
+
+yaml_version: 6
